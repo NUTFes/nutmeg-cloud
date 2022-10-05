@@ -1,6 +1,9 @@
-[submodule "envfiles"]
-	path = envfiles
-	url = https://github.com/NUTFes/envfiles.git
-[submodule "stickee_account"]
-	path = stickee_account
-	url = https://github.com/NUTFes/stickee_account.git
+[submodule "server/proxy"]
+	path = server/proxy
+	url = git@github.com:NUTFes/nginx_config.git
+[submodule "security/stickee"]
+	path = security/stickee
+	url = git@github.com:NUTFes/stickee.git
+[submodule "projects"]
+	path = projects
+	url = git@github.com:NUTFes/envfiles.git

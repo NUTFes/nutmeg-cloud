@@ -1,2 +1,3 @@
 # nutmeg-cloud
-NUTMEGクラウドに関するリポジトリ
+
+NUTMEG クラウドに関するリポジトリ
