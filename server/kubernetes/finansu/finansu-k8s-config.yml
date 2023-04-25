@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finansu-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: finansu-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: finansu-api
+    spec:
+      containers:
+      - name: finansu-api-container
+        image: nutfes/finansu-api:latest
+        ports:
+        - containerPort: 1323
+        env:
+        - name: NUTMEG_DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: NUTMEG_DB_USER
+        - name: NUTMEG_DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: NUTMEG_DB_PASSWORD
+        - name: NUTMEG_DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: NUTMEG_DB_HOST
+        - name: NUTMEG_DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: NUTMEG_DB_PORT
+        - name: NUTMEG_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: env-config
+              key: NUTMEG_DB_NAME
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: finansu-service
+spec:
+  type: NodePort
+  ports:
+  - port: 1323
+  selector:
+    app: finansu-api
