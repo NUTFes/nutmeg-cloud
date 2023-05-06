@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finansu-view-deployment
+spec:
+  selector:
+    matchLabels:
+      app: finansu-view
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: finansu-view
+    spec:
+      containers:
+        - name: finansu-view-container
+          image: nutfes/finansu-view:latest
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: finansu-view-service
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+  selector:
+    app: finansu-view
