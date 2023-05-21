@@ -17,9 +17,9 @@ spec:
         - name: finansu-view-container
           image: nutfes/finansu-view:latest
           resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           ports:
             - containerPort: 3000
 ---
