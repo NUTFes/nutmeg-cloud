@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: finansu-api-deployment
+  namespace: finansu
 spec:
   selector:
     matchLabels:
@@ -15,6 +16,10 @@ spec:
       containers:
       - name: finansu-api-container
         image: nutfes/finansu-api:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 1323
         env:
@@ -47,10 +52,31 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: finansu-service
+  name: finansu-api-service
+  namespace: finansu
 spec:
   type: NodePort
   ports:
   - port: 1323
   selector:
     app: finansu-api
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: finensu-api-ingress
+  namespace: finansu
+  labels:
+    name: finensu-api-ingress
+spec:
+  rules:
+  - host: finansu-api.nutfes.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: finansu-api-service
+            port: 
+              number: 1323

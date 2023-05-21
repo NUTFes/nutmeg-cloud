@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: apps/v1
+metadata:
+  name: finansu
+  labels:
+    name: finansu
