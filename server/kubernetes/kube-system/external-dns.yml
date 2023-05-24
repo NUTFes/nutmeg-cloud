@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: kube-system
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      containers:
+      - name: external-dns
+        image: registry.k8s.io/external-dns/external-dns:v0.13.4
+        args:
+        - --source=ingress
+        - --source=service
+        - --domain-filter=nutfes.net # (オプション) nutfes.netドメインのみに制限
+        - --provider=cloudflare
+        - --cloudflare-proxied # (オプション) Cloudflare のプロキシ機能 (DDOS 保護、CDN など) を有効
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        envFrom:
+        - secretRef:
+            name: cf-apikey 

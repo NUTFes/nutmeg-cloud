@@ -1,0 +1,67 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: cloudflare
+  labels:
+    name: cloudflare
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cloudflared
+  name: cloudflared
+  namespace: cloudflare
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: cloudflared
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9090"
+        prometheus.io/scrape: "true"
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+      - args:
+        - tunnel
+        - --config
+        - /etc/cloudflared/default.yaml
+        - --metrics
+        - 0.0.0.0:9090
+        - run
+        image: cloudflare/cloudflared:2021.5.10
+        imagePullPolicy: Always
+        name: cloudflared
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 9090
+          name: exporterport
+          protocol: TCP
+        volumeMounts:
+        - name: config-vol
+          mountPath: /etc/cloudflared
+          readOnly: true
+      volumes:
+      - name: config-vol
+        projected:
+          sources:
+            - configMap:
+                name: config-file
+            - secret:
+                name: credential-file
+       
+
