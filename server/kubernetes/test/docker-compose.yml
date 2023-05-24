@@ -1,9 +1,0 @@
-version: "3"
-services:
-  k3d:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: "k3d"
-    volumes:
-      - .:/k3d
