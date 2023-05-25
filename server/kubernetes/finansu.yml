@@ -1,3 +1,50 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: finansu
+  labels:
+    name: finansu
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finansu-api-deployment
+  namespace: finansu
+spec:
+  selector:
+    matchLabels:
+      app: finansu-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: finansu-api
+    spec:
+      containers:
+      - name: finansu-api-container
+        image: nutfes/finansu-api:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 1323
+        envFrom:
+        - configMapRef:
+            name: env-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: finansu-api-service
+  namespace: finansu
+spec:
+  type: NodePort
+  ports:
+  - port: 1323
+  selector:
+    app: finansu-api
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -54,4 +101,13 @@ spec:
             name: finansu-view-service
             port: 
               number: 3000
-
+  - host: finansu-api.nutfes.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: finansu-api-service
+            port: 
+              number: 1323
