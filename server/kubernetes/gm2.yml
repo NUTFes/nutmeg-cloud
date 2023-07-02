@@ -25,13 +25,15 @@ spec:
         image: nutfes/group-manager-2-api:latest
         resources:
           limits:
-            memory: "512Mi"
+            memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 1323
         envFrom:
         - configMapRef:
             name: env-config
+        - secretRef:
+            name: secret-data
 ---
 apiVersion: v1
 kind: Service
@@ -65,7 +67,7 @@ spec:
           image: nutfes/group-manager-2-admin_view:latest
           resources:
             limits:
-              memory: "512Mi"
+              memory: "128Mi"
               cpu: "500m"
           ports:
             - containerPort: 8000
