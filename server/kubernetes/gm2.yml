@@ -1,0 +1,113 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: group-manager-2
+  labels:
+    name: group-manager-2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: group-manager-2-api-deployment
+  namespace: group-manager-2
+spec:
+  selector:
+    matchLabels:
+      app: group-manager-2-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: group-manager-2-api
+    spec:
+      containers:
+      - name: group-manager-2-api-container
+        image: nutfes/group-manager-2-api:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 1323
+        envFrom:
+        - configMapRef:
+            name: env-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: group-manager-2-api-service
+  namespace: group-manager-2
+spec:
+  type: NodePort
+  ports:
+  - port: 1323
+  selector:
+    app: group-manager-2-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: group-manager-2-view-deployment
+  namespace: group-manager-2
+spec:
+  selector:
+    matchLabels:
+      app: group-manager-2-view
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: group-manager-2-view
+    spec:
+      containers:
+        - name: group-manager-2-view-container
+          image: nutfes/group-manager-2-admin_view:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: group-manager-2-view-service
+  namespace: group-manager-2
+spec:
+  type: NodePort
+  ports:
+    - port: 8000
+  selector:
+    app: group-manager-2-view
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: group-manager-2-view-ingress
+  namespace: group-manager-2
+  labels:
+    name: group-manager-2-view-ingress
+spec:
+  rules:
+  - host: group-manager-2.nutfes.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: group-manager-2-view-service
+            port: 
+              number: 8000
+  - host: group-manager-2-api.nutfes.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: group-manager-2-api-service
+            port: 
+              number: 1323
