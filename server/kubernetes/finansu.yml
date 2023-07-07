@@ -65,7 +65,7 @@ spec:
           image: nutfes/finansu-view:latest
           resources:
             limits:
-              memory: "128Mi"
+              memory: "512Mi"
               cpu: "500m"
           ports:
             - containerPort: 3000
@@ -85,13 +85,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: finansu-view-ingress
+  name: finansu-ingress
   namespace: finansu
   labels:
-    name: finansu-view-ingress
+    name: finansu-ingress
 spec:
+  ingressClassName: "nginx"
   rules:
-  - host: finansu.nutfes.net
+  - host: finansu-test.nutfes.net
     http:
       paths:
       - pathType: Prefix
@@ -99,9 +100,9 @@ spec:
         backend:
           service:
             name: finansu-view-service
-            port: 
+            port:
               number: 3000
-  - host: finansu-api.nutfes.net
+  - host: finansu-api-test.nutfes.net
     http:
       paths:
       - pathType: Prefix
@@ -109,5 +110,5 @@ spec:
         backend:
           service:
             name: finansu-api-service
-            port: 
+            port:
               number: 1323
