@@ -34,6 +34,6 @@ resource "proxmox_lxc" "basic" {
     firewall = true
     ip       = "${each.value.ip_address}/24"
     ip6      = "auto"
-
   }
+
 }
