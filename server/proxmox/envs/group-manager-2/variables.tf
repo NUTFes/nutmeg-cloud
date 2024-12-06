@@ -2,7 +2,7 @@
 variable "settings" {
   type = map(object({
     hostname    = string
-    clone       = string
+    template    = string
     target_node = string
     vmid        = number
     cores       = number
