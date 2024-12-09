@@ -1,9 +1,10 @@
 variable "settings" {
   type = map(object({
-    hostname    = string
-    template    = string
-    target_node = string
     vmid        = number
+    target_node = string
+    hostname    = string
+    ssh_keys    = list(string)
+    template    = string
     cores       = number
     memory      = number
     swap        = number
@@ -15,10 +16,11 @@ variable "settings" {
 resource "proxmox_lxc" "basic" {
   for_each = var.settings
 
-  vmid            = each.value.vmid
-  target_node     = each.value.target_node
-  hostname        = each.value.hostname
-  ssh_public_keys = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN35vH5w6YQXEAOvQMaiUhFyjZX3i+u7P1Q6B0xN5vPZ ichinose@MacBookNose.local"
+  vmid        = each.value.vmid
+  target_node = each.value.target_node
+  hostname    = each.value.hostname
+
+  ssh_public_keys = join("\n", each.value.ssh_keys)
 
   ostemplate = "local:vztmpl/${each.value.template}.tar.zst"
 
