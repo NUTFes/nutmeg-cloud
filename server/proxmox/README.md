@@ -43,11 +43,18 @@ is 1.10.1. You can update by downloading from https://www.terraform.io/downloads
 
 
 ## 作成したいとき
-1. リポジトリを作成する
-
-下のコマンドを実行する
+1. ディレクトリとファイルの準備
+- 変数と説明
+  - resource_type
+    - vmかlxc
+  - pruduct
+    - プロダクトの名前を入力
 ```bash
-make init product=example resource_type
+# コンテナを作りたいとき
+make init resource_type=lxc product=example
+
+# VMを作りたいとき
+make init resource_type=vm product=example
 ```
 exampleにはプロダクト名や用途など、わかるように設定
 
