@@ -1,9 +1,9 @@
 init:
-	cp -r envs/template envs/$(DIR_NAME)
-	cd envs/$(DIR_NAME) && terraform init
+	cp -r envs/template/$(resource_type) envs/$(product)
+	cd envs/$(product) && terraform init
 
 plan:
-	cd envs/$(DIR_NAME) && terraform plan
+	cd envs/$(product) && terraform plan
 
 apply:
-	cd envs/$(DIR_NAME) && terraform apply
+	cd envs/$(product) && terraform apply
