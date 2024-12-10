@@ -24,7 +24,6 @@ resource "proxmox_lxc" "basic" {
 
   ostemplate = "local:vztmpl/${each.value.template}.tar.zst"
 
-
   cores  = each.value.cores
   memory = each.value.memory
   swap   = each.value.swap
