@@ -47,7 +47,7 @@ is 1.10.1. You can update by downloading from https://www.terraform.io/downloads
 
 下のコマンドを実行する
 ```bash
-make init DIR_NAME=example
+make init product=example resource_type
 ```
 exampleにはプロダクト名や用途など、わかるように設定
 
@@ -60,7 +60,7 @@ exampleにはプロダクト名や用途など、わかるように設定
 3. planを実行
 下のコマンドを実行する
 ```bash
-make plan DIR_NAME=example
+make plan product=example
 ```
 planはドライランなので、本当に実行した際に起きる差分を出してくれます
 この結果をPRに貼り付けてインフラの誰かに見てもらってください
