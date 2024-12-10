@@ -4,12 +4,12 @@ settings = {
     # 既存のVMと重複しないようにする
     # 先頭はPVEのIDと同じにする
     # 例：pveがpve02の場合、201,202,203...とする
-    vmid        = xxx
+    vmid        = 201
     # どのサーバに作成するかを指定する
     # pve02~06のどれかを指定する
-    target_node = "pve0x"
+    target_node = "pve02"
     # ディレクトリの名前と同じにする
-    hostname    = "プロダクト名"
+    hostname    = "group-manager-2"
     # SSHの公開鍵
     # アクセスするPCの公開鍵をListに追加する
     ssh_keys    = [
@@ -29,7 +29,7 @@ settings = {
     disk_size   = "16G"
     # IPアドレス
     # /24なので、最後の数字を変える
-    ip_address  = "192.168.1.xxx"
+    ip_address  = "192.168.1.201"
   }
 }
 
