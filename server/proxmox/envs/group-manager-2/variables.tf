@@ -1,10 +1,11 @@
 
 variable "settings" {
   type = map(object({
-    hostname    = string
-    template    = string
-    target_node = string
     vmid        = number
+    target_node = string
+    hostname    = string
+    ssh_keys    = list(string)
+    template    = string
     cores       = number
     memory      = number
     swap        = number

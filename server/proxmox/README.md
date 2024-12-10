@@ -44,7 +44,7 @@ is 1.10.1. You can update by downloading from https://www.terraform.io/downloads
 
 ## 作成したいとき
 1. ディレクトリとファイルの準備
-- 変数と説明
+- コマンドの引数と説明
   - resource_type
     - vmかlxc
   - pruduct
