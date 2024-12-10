@@ -1,5 +1,5 @@
 init:
-	@cp -r envs/template/$(resource_type) envs/$(product)
+	@cp -r template/$(resource_type) envs/$(product)
 	@cd envs/$(product) && terraform init
 
 plan:
